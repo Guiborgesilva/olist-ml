@@ -1,0 +1,22 @@
+RESULTADO DO PIPELINE OLIST
+===========================
+
+Pedidos utilizados: 96,456
+Pedidos atrasados: 6,534
+Taxa de atraso: 6.77%
+
+RANDOM FOREST
+Accuracy:  0.8232
+Precision: 0.1803
+Recall:    0.4541
+F1:        0.2581
+ROC-AUC:   0.7304
+PR-AUC:    0.1791
+Limiar:    0.4008
+
+REGRESSÃO
+                  modelo  mae_atrasados  rmse_atrasados  r2_atrasados  mae_pipeline_completo  rmse_pipeline_completo  r2_pipeline_completo
+MultipleLinearRegression         7.7460         13.3785        0.0347                 2.1760                  5.8607               -0.7644
+    PolynomialRegression         7.8705         13.5954        0.0032                 2.1385                  5.8479               -0.7567
+
+Observação: os resultados acima são baseados nos datasets fornecidos.
