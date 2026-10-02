@@ -7,38 +7,6 @@ MODELOS DEFINIDOS PARA O PROJETO
 1. Random Forest Classifier -> classifica risco de atraso (0/1)
 2. Regressão Linear Múltipla -> estima quantos dias de atraso existem
 3. Regressão Polinomial -> tenta capturar relações não lineares na estimativa
-
-FLUXO DO PROJETO
-----------------
-Dados brutos
-    |
-    v
-Junção orders + order_items
-    |
-    v
-Feature Engineering
-    |
-    +--> Random Forest -> probabilidade de atraso
-    |                         |
-    |                         v
-    |                  vira uma feature
-    |                         |
-    +-------------------------+
-                              v
-                  Regressões (somente pedidos atrasados)
-                              |
-                              v
-                     dias de atraso estimados
-
-IMPORTANTE SOBRE OS DADOS
--------------------------
-O dataset possui alguns valores extremos. O código NÃO apaga esses registros
-automaticamente do alvo só porque são extremos. Em vez disso, a EDA os mede e
-cria uma lista de possíveis anomalias. A decisão de remover/corrigir casos
-específicos deve ser justificada no relatório após a inspeção.
-
-O código também evita data leakage: datas conhecidas somente depois da entrega
-não entram como variáveis explicativas.
 """
 
 from pathlib import Path
@@ -898,9 +866,9 @@ def prepare_regression_data(
     Prepara a base para a regressão.
 
     A regressão responde:
-        "Entre os pedidos atrasados, quantos dias de atraso ocorreram?"
+        "Entre os pedidos atrasados, ocorreram quantos dias de atraso?"
 
-    Portanto, treinamos a regressão somente nas linhas em que o target
+    Então treinamos a regressão somente nas linhas em que o target
     real indica atraso.
     """
 
@@ -1001,7 +969,7 @@ def evaluate_regression_models(
         pred_all = model.predict(X_reg_test)
         pred_all = np.clip(pred_all, 0, None)
 
-        # Só usamos a previsão da regressão se o Random Forest indicar risco.
+        # Só usa a previsão da regressão se o Random Forest indicar risco.
         final_prediction = np.where(
             risk_probability_test >= risk_threshold,
             pred_all,
@@ -1188,7 +1156,7 @@ def main() -> None:
         X_test,
     )
 
-    # Agora avaliamos o teste usando o limiar que foi definido sem tocar
+    # Agora vai avaliar o teste usando o limiar que foi definido sem tocar
     # nos dados de teste.
     classification_output = evaluate_random_forest(
         rf_model,
